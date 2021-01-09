@@ -8,18 +8,28 @@ vk_session.auth()
 
 vk = vk_session.get_api()
 id = int(input('Введите peer_id: '))
-print('Для беседы: 1; для лички: 2')
-buf = input('Введите число: ')
+
+print('Выберите режим: 1 - только текст, 2 - только аудиосообщения, 3 - и то, и другое')
+buf2 = input('Введите число: ')
+aud_mes = True
+txt_mes = True
 peer_id = 2000000000 + id
-if buf == '2':
+if buf2 == '1':
+    aud_mes = False
+elif buf2 == '2':
+    txt_mes = False
+
+if len(str(id)) > 5:
     peer_id = id
 print('Запуск...')
 while True:
-    vk.messages.markAsRead(peer_id=peer_id)
-    vk.messages.setActivity(peer_id=peer_id, type="audiomessage")
-    time.sleep(6)
-    print('Голосовое...')
-    vk.messages.markAsRead(peer_id=peer_id)
-    vk.messages.setActivity(peer_id=peer_id, type="typing")  # можно audiomessage  будет голосовуха
-    time.sleep(6)
-    print('Текстовое...')
+    if aud_mes:
+        vk.messages.markAsRead(peer_id=peer_id)
+        vk.messages.setActivity(peer_id=peer_id, type="audiomessage")
+        time.sleep(6)
+        print('Голосовое...')
+    if txt_mes:
+        vk.messages.markAsRead(peer_id=peer_id)
+        vk.messages.setActivity(peer_id=peer_id, type="typing")  # можно audiomessage  будет голосовуха
+        time.sleep(6)
+        print('Текстовое...')
